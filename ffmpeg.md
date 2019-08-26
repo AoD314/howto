@@ -14,6 +14,10 @@ https://ffmpeg.org/ffmpeg-all.html#ssim
 
 https://github.com/stoyanovgeorge/ffmpeg/wiki/How-to-Compare-Video
 
+```
+ffmpeg -i main.mpg -i ref.mpg -lavfi  "ssim;[0:v][1:v]psnr" -f null -
+```
+
 ## Video
 
 https://trac.ffmpeg.org/wiki/Encode/H.264
