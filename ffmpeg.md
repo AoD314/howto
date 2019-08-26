@@ -6,6 +6,12 @@ https://habr.com/ru/post/171213/
 
 https://www.ostechnix.com/20-ffmpeg-commands-beginners/
 
+## Compare images or video
+
+http://www.compression.ru/video/quality_measure/video_measurement_tool.html
+
+https://ffmpeg.org/ffmpeg-all.html#ssim
+
 https://github.com/stoyanovgeorge/ffmpeg/wiki/How-to-Compare-Video
 
 ## Video
