@@ -1,6 +1,22 @@
 # Links
 
+## Video
+
+https://trac.ffmpeg.org/wiki/Encode/H.264
+
+https://trac.ffmpeg.org/wiki/Encode/H.265
+
+https://trac.ffmpeg.org/wiki/Encode/VP9
+
 https://trac.ffmpeg.org/wiki/Encode/AV1
+
+## Audio
+
+https://trac.ffmpeg.org/wiki/Encode/MP3
+
+https://trac.ffmpeg.org/wiki/Encode/AAC
+
+https://trac.ffmpeg.org/wiki/Encode/HighQualityAudio
 
 # Examples
 
