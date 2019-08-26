@@ -1,5 +1,13 @@
 # Links
 
+## General
+
+https://habr.com/ru/post/171213/
+
+https://www.ostechnix.com/20-ffmpeg-commands-beginners/
+
+https://github.com/stoyanovgeorge/ffmpeg/wiki/How-to-Compare-Video
+
 ## Video
 
 https://trac.ffmpeg.org/wiki/Encode/H.264
