@@ -28,6 +28,8 @@ https://trac.ffmpeg.org/wiki/Encode/VP9
 
 https://trac.ffmpeg.org/wiki/Encode/AV1
 
+https://trac.ffmpeg.org/wiki/Encode/FFV1
+
 ## Audio
 
 https://trac.ffmpeg.org/wiki/Encode/MP3
