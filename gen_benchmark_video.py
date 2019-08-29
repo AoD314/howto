@@ -3,7 +3,7 @@ import random
 
 settings = {
     'img_size': (1920, 1080),
-    'ratio': 0.2
+    'ratio': 0.1
 }
 
 colors = [
@@ -52,15 +52,15 @@ class Ball:
         self.x += self.dir[0] * speed
         self.y += self.dir[1] * speed
 
-        self.dir[0] = -self.dir[0] if self.x <= 0 else self.dir[0]
-        self.dir[1] = -self.dir[1] if self.y <= 0 else self.dir[1]
+        self.dir[0] = -self.dir[0] if self.x - self.r <= 0 else self.dir[0]
+        self.dir[1] = -self.dir[1] if self.y - self.r <= 0 else self.dir[1]
 
-        self.dir[0] = -self.dir[0] if self.x >= self.border[0] else self.dir[0]
-        self.dir[1] = -self.dir[1] if self.y >= self.border[1] else self.dir[1]
+        self.dir[0] = -self.dir[0] if self.x + self.r >= self.border[0] else self.dir[0]
+        self.dir[1] = -self.dir[1] if self.y + self.r >= self.border[1] else self.dir[1]
 
 class Balls:
     def __init__(self, speed=0.1):
-        self.balls = [Ball(100, 100, 100, colors[-8], settings['img_size'])]
+        self.balls = [Ball(settings['img_size'][0] / 2, settings['img_size'][1] / 2, min(settings['img_size']) * settings['ratio'], colors[-8], settings['img_size'])]
         self.speed = speed * settings['img_size'][1]
         self.frame_number = 0
 
@@ -81,11 +81,13 @@ class Balls:
 def main():
     balls = Balls()
 
-    for i in range(30):
-        image = Image.new(mode='RGBA', size=settings['img_size'])
+    N = 600
+
+    for i in range(N):
+        image = Image.new(mode='RGB', size=settings['img_size'])
         balls.render(image)
         name = balls.iter()
-        image.save(name + '.webp', lossless=1, method=6)
+        image.save('src/' + name + '.webp', lossless=1, method=6)
         print ('save: {}'.format(name + '.webp'))
 
 if __name__ == '__main__':
