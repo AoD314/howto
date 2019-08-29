@@ -40,7 +40,7 @@ https://trac.ffmpeg.org/wiki/Encode/HighQualityAudio
 
 # Examples
 
-http://ffmpeg.org/ffmpeg.html
+http://ffmpeg.org/ffmpeg-all.html
 
 ```
 ffmpeg -i SOURCE.mov -map_metadata -1 -c:a libopus -c:v libaom-av1 -crf 34 -b:v 0 -pix_fmt yuv420p -movflags +faststart -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -strict experimental video.av1.mp4
