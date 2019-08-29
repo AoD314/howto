@@ -54,3 +54,10 @@ ffmpeg -i SOURCE.mov -map_metadata -1 -c:a libfdk_aac -c:v libx265 -crf 24 -pres
 ffmpeg -i input.mp4 -c:v libaom-av1 -strict experimental -b:v 2M -pass 1 -an -f matroska /dev/null && \
 ffmpeg -i input.mp4 -c:v libaom-av1 -strict experimental -b:v 2M -pass 2 -c:a libopus output.mkv
 ```
+
+## Lossless video from images
+
+```
+ffmpeg -i "image_%%05d.webp" -r 30 -vcodec ffv1 -level 3 -pass 1 -passlogfile my_passlog -y -f nut NUL
+ffmpeg -i "image_%%05d.webp" -r 30 -vcodec ffv1 -level 3 -pass 2 -passlogfile my_passlog -y video_lossless.avi
+```
