@@ -58,6 +58,6 @@ ffmpeg -i input.mp4 -c:v libaom-av1 -strict experimental -b:v 2M -pass 2 -c:a li
 ## Lossless video from images
 
 ```
-ffmpeg -i "image_%%05d.webp" -r 30 -vcodec ffv1 -level 3 -pass 1 -passlogfile my_passlog -y -f nut NUL
-ffmpeg -i "image_%%05d.webp" -r 30 -vcodec ffv1 -level 3 -pass 2 -passlogfile my_passlog -y video_lossless.avi
+ffmpeg -i "src/image_%%05d.webp" -r 30 -vcodec ffv1 -r 30 -threads 12 -level 3 -pass 1 -passlogfile my_passlog -y -f nut NUL
+ffmpeg -i "src/image_%%05d.webp" -r 30 -vcodec ffv1 -r 30 -threads 12 -level 3 -pass 2 -passlogfile my_passlog -y video_lossless.avi
 ```
