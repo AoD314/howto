@@ -3,7 +3,7 @@ import random
 
 settings = {
     'img_size': (1920, 1080),
-    'ratio': 0.025
+    'ratio': 0.015
 }
 
 def get_color():
@@ -68,7 +68,7 @@ class Ball:
 class Balls:
     def __init__(self, nb=10, speed=0.01):
         self.balls = []
-        r = min(settings['img_size']) * settings['ratio']
+        r = int(min(settings['img_size']) * settings['ratio'])
         for _ in range(nb):
             self.balls.append(Ball(random.randint(2 * r, settings['img_size'][0] - 2 * r), random.randint(2 * r, settings['img_size'][1] - 2 * r), r, get_color(), settings['img_size']))
 
@@ -90,7 +90,7 @@ class Balls:
         d.text((10, 10), "{:05d}".format(self.frame_number), font=fnt, fill=(255, 255, 255, 255))
 
 def main():
-    balls = Balls(nb=100, speed=0.02)
+    balls = Balls(nb=800, speed=0.01)
 
     N = 300
 
