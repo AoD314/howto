@@ -61,3 +61,9 @@ ffmpeg -i input.mp4 -c:v libaom-av1 -strict experimental -b:v 2M -pass 2 -c:a li
 ffmpeg -i "src/image_%%05d.webp" -r 30 -vcodec ffv1 -r 30 -threads 12 -level 3 -pass 1 -passlogfile my_passlog -y -f nut NUL
 ffmpeg -i "src/image_%%05d.webp" -r 30 -vcodec ffv1 -r 30 -threads 12 -level 3 -pass 2 -passlogfile my_passlog -y video_lossless.avi
 ```
+
+## m2ts to mkv
+
+```
+ffmpeg -i 00019.m2ts -map_metadata -1 -map 0:0 -map 0:12 -c:v h264_nvenc -b:v 10M -pix_fmt yuv420p -c:a aac -b:a 256k -vf scale=1920:-1 -preset slow -y output.1080.10M.rus.mkv
+```
