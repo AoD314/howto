@@ -31,16 +31,13 @@ perf record -e branch-misses -g ./benchmark
 perf stat -e L1-icache-load-misses ./benchmark
 
 
-perf record -a -g ./benchmark
+perf record -a -F 99 --call-graph -g ./benchmark
 perf report -g fractal
 
 
 perf record -F 99 -g -- ./benchmark
-perf script > out.perf
-stackcollapse-perf.pl out.perf > out.folded
-flamegraph.pl out.folded > ./perf.svg
+perf script | ./stackcollapse-perf.pl | ./flamegraph.pl > perf.svg
 perf report -g -i perf.data.
-
 
 perf stat -e cycles,instructions,cache-references,cache-misses,bus-cycles ./benchmark --clocksource=cpu --name=test --bs=4k --filename=/dev/nvme0n1p4 --direct=1 --ioengine=pvsync2 --hipri --rw=randread --filesize=4G --loops=10
 ```
