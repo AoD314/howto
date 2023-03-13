@@ -31,7 +31,7 @@ perf record -e branch-misses -g ./benchmark
 perf stat -e L1-icache-load-misses ./benchmark
 
 
-perf record -a -F 9999 --call-graph -g ./benchmark
+perf record -a -F 19999 -g ./benchmark
 perf report -g fractal
 
 
