@@ -28,16 +28,13 @@ gcc -O3 -mtune=native -fvect-cost-model=unlimited -S -c file.c -o - | llvm-mca -
 
 ```
 perf record -e branch-misses -g ./benchmark
+perf report -g fractal
 perf stat -e L1-icache-load-misses ./benchmark
 
 
-perf record -a -F 19999 -g ./benchmark
-perf report -g fractal
-
-
-perf record -F 99 -g -- ./benchmark
+perf record -s -g -F 99999 -- ./benchmark
 perf script | ./stackcollapse-perf.pl | ./flamegraph.pl > perf.svg
-perf report -g -i perf.data.
+perf report --percent-limit 1 -i perf.data 
 
 perf stat -e cycles,instructions,cache-references,cache-misses,bus-cycles ./benchmark --clocksource=cpu --name=test --bs=4k --filename=/dev/nvme0n1p4 --direct=1 --ioengine=pvsync2 --hipri --rw=randread --filesize=4G --loops=10
 ```
@@ -49,6 +46,16 @@ stackcollapse-perf.pl ./result | flamegraph.pl > ./result.svg
 
 ```
 
+# Valgrind
+
+```
+$ # performance 
+$ valgrind --tool=callgrind --dump-instr=yes --collect-jumps=yes --collect-bus=yes --cache-sim=yes --collect-systime=msec --time-stamp=yes ./app
+
+$ # memcheck
+$ valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all ./tests --gtest_filter=*Source* 2> memory.log
+
+```
 
 
 
