@@ -1,3 +1,9 @@
+
+# logs
+```
+journalctl -u kubelet
+```
+
 # remove all logs
 
 ```
