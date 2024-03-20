@@ -6,9 +6,12 @@ sudo journalctl --vacuum-time=1s
 ```
 # config short logs
 
-set /etc/systemd/journald.conf
+edit `/etc/systemd/journald.conf`
 ```
-SystemMaxUse=100M
+[Journal]
+Compress=yes
+SystemMaxUse=64M
+SystemMaxFileSize=4
 ```
 and then restart journald
 ```
