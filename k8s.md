@@ -4,11 +4,7 @@
 
 Docs: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl
 
-help links:
-- https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/
-
 ```
-
 sudo su - root
 
 apt update
@@ -17,27 +13,34 @@ apt autoremove
 
 apt install software-properties-common apt-transport-https ca-certificates gnupg2 gpg sudo
 
-echo "overlay" >> /etc/modules
-echo "br_netfilter" >> /etc/modules
-
-echo 1 > /proc/sys/net/ipv4/ip_forward
-
-apt purge kubernetes-cni kubectl kubelet kubeadm containerd
+```
+## docker
+```
 for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
-apt update
 
-sudo apt-get update
-sudo apt-get install ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
+apt-get update
+apt-get install ca-certificates curl
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+chmod a+r /etc/apt/keyrings/docker.asc
 
-# Add the repository to Apt sources:
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
+
+apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+## k8s
+
+```
+apt purge kubernetes-cni kubectl kubelet kubeadm containerd
+apt update
+
+echo "overlay" >> /etc/modules
+echo "br_netfilter" >> /etc/modules
+echo 1 > /proc/sys/net/ipv4/ip_forward
 
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
@@ -49,9 +52,6 @@ apt-get install -y kubelet kubeadm kubectl
 apt-mark hold kubelet kubeadm kubectl
 
 systemctl enable --now kubelet
-
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
 
 kubeadm init --pod-network-cidr=10.100.0.0/16
 
@@ -77,3 +77,17 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl get nodes [<NAME> -o yaml]
 
 ```
+
+# FAQ
+
+Q: [ERROR CRI]: container runtime is not running: output
+A: https://github.com/containerd/containerd/issues/8139
+```
+cat /etc/crictl.yaml
+
+runtime-endpoint: "unix:///run/containerd/containerd.sock"
+timeout: 0
+debug: false
+##################################################################
+```
+
