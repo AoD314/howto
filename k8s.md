@@ -94,7 +94,7 @@ apt-mark hold kubelet kubeadm kubectl
 systemctl enable --now kubelet
 systemctl status kubelet
 
-kubeadm init --pod-network-cidr=10.100.0.0/16
+kubeadm init --pod-network-cidr=10.100.0.0/16 --cri-socket=unix:///var/run/containerd/containerd.sock
 
 kubeadm join 192.168.1.13:6443 --token <TOKEN> \
         --discovery-token-ca-cert-hash sha256:<HASH>
