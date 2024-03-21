@@ -112,6 +112,11 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
+or 
+```
+echo "export KUBECONFIG=/etc/kubernetes/admin.conf" > /etc/environment
+export KUBECONFIG=/etc/kubernetes/admin.conf
+```
 
 # some may be helpfull links:
 
