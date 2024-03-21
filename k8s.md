@@ -9,6 +9,10 @@ rm -rf /var/lib/etcd || true
 rm -rf ~/.kube || true
 ```
 
+```
+kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+```
+
 ## Install 
 
 Docs: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl
