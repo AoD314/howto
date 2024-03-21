@@ -1,24 +1,26 @@
 # K8s
 
-# Install 
+## Commands
+
+```
+echo y | kubeadm reset || true
+rm -rf /etc/cni/net.d || true
+rm -rf /var/lib/etcd || true
+rm -rf ~/.kube || true
+```
+
+## Install 
 
 Docs: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl
 
-```
-sudo su - root
-
-apt update
-apt upgrade
-apt autoremove
-
-apt install software-properties-common apt-transport-https ca-certificates gnupg2 gpg sudo
+### docker & containerd
 
 ```
-## docker
+systemctl status docker
+systemctl status containerd
 ```
-for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
 
-apt-get update
+```
 apt-get install ca-certificates curl
 install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
@@ -28,66 +30,46 @@ echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
-
-apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-```
-## k8s
-
-```
-apt purge kubernetes-cni kubectl kubelet kubeadm containerd
-apt update
-
-echo "overlay" >> /etc/modules
-echo "br_netfilter" >> /etc/modules
-echo 1 > /proc/sys/net/ipv4/ip_forward
-
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 apt-get update
-apt-get install -y kubelet kubeadm kubectl
-#disable auto update
+apt-get install containerd docker-buildx-plugin docker-compose-plugin
+
+systemctl start containerd
+systemctl status containerd
+systemctl enable containerd
+
+apt-get install docker.io
+
+systemctl start docker
+systemctl status docker
+systemctl enable docker
+
+```
+### k8s
+
+```
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' > /etc/apt/sources.list.d/kubernetes.list
+
+apt-get update
+apt-get install kubelet kubeadm kubectl
+
 apt-mark hold kubelet kubeadm kubectl
 
 systemctl enable --now kubelet
+systemctl status kubelet
 
 kubeadm init --pod-network-cidr=10.100.0.0/16
 
-kubeadm join 192.168.1.13:6443 --token l6dvo4.fgrek25oxnaxrxy5 \
-        --discovery-token-ca-cert-hash sha256:ca0efe27f81a34dcc383faa8fc10457287d37cbfa5fb6c8317d8c151b83c9f73
-
+kubeadm join 192.168.1.13:6443 --token <TOKEN> \
+        --discovery-token-ca-cert-hash sha256:<HASH>
 
 ```
 
-Access to k8s:
+### config kubectl
 
 ```
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-
 ```
-
-# Commands
-
-```
-kubectl get nodes [<NAME> -o yaml]
-
-```
-
-# FAQ
-
-Q: [ERROR CRI]: container runtime is not running: output
-A: https://github.com/containerd/containerd/issues/8139
-```
-cat /etc/crictl.yaml
-
-runtime-endpoint: "unix:///run/containerd/containerd.sock"
-timeout: 0
-debug: false
-##################################################################
-```
-
