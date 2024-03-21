@@ -45,6 +45,21 @@ systemctl status docker
 systemctl enable docker
 
 ```
+
+if there are some issues:
+
+reinit containerd config:
+```
+containerd config default > /etc/containerd/config.toml
+```
+then set:
+```
+systemd_cgroup=false --> true
+...
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+     SystemdCgroup = true
+```
+
 ### k8s
 
 ```
@@ -73,3 +88,7 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
+
+# some may be helpfull links:
+
+* https://github.com/containerd/containerd/blob/main/docs/cri/config.md
