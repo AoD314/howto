@@ -17,7 +17,7 @@ edit `/etc/systemd/journald.conf`
 [Journal]
 Compress=yes
 SystemMaxUse=64M
-SystemMaxFileSize=4
+SystemMaxFileSize=8M
 ```
 and then restart journald
 ```
