@@ -9,9 +9,30 @@ rm -rf /var/lib/etcd || true
 rm -rf ~/.kube || true
 ```
 
+## kubeadm
+
+```
+kubeadm token create --print-join-command
+```
+
+## kubectl
+
 ```
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 ```
+
+```
+kubectl get pods -A
+```
+
+Check k8s:
+
+```
+kubectl run -i --tty busybox --image=busybox -- sh
+kubectl attach busybox -i
+kubectl delete pod busybox
+```
+
 
 ## Install 
 
@@ -98,7 +119,7 @@ apt-mark hold kubelet kubeadm kubectl
 systemctl enable --now kubelet
 systemctl status kubelet
 
-kubeadm init --pod-network-cidr=10.100.0.0/16 --cri-socket=unix:///var/run/containerd/containerd.sock
+kubeadm init --pod-network-cidr=10.244.0.0/16 --cri-socket=unix:///var/run/containerd/containerd.sock
 
 kubeadm join 192.168.1.13:6443 --token <TOKEN> \
         --discovery-token-ca-cert-hash sha256:<HASH>
@@ -117,6 +138,25 @@ or
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" > /etc/environment
 export KUBECONFIG=/etc/kubernetes/admin.conf
 ```
+
+# Helm
+
+## Install
+
+```
+wget https://get.helm.sh/helm-v3.14.3-linux-amd64.tar.gz
+tar -zxvf helm-v3.14.3-linux-amd64.tar.gz
+sudo mv linux-amd64/helm /usr/local/bin/helm
+```
+
+# Gitlab
+
+https://docs.gitlab.com/runner/install/kubernetes.html
+
+```
+
+```
+
 
 # some may be helpfull links:
 
