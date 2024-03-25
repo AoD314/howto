@@ -151,12 +151,34 @@ sudo mv linux-amd64/helm /usr/local/bin/helm
 
 # Gitlab
 
+https://docs.gitlab.com/ee/install/docker.html
 https://docs.gitlab.com/runner/install/kubernetes.html
 
 ```
-
+export GITLAB_HOME=/path/to/folder
+docker run --detach   \
+    --hostname gitlab.zion.com   \
+    --env GITLAB_OMNIBUS_CONFIG="external_url 'http://gitlab.zion.com'" \
+    --publish 8443:443 \
+    --publish 8080:80 \
+    --publish 8022:22 \
+    --name gitlab \
+    --restart always \
+    --volume $GITLAB_HOME/config:/etc/gitlab
+    --volume $GITLAB_HOME/logs:/var/log/gitlab \
+    --volume $GITLAB_HOME/data:/var/opt/gitlab  \
+    --shm-size 256m \
+    gitlab/gitlab-ce:16.10.0-ce.0
 ```
 
+This container uses the official Linux package, so all configuration is done in the unique configuration file /etc/gitlab/gitlab.rb.
+
+To access the GitLab configuration file, you can start a shell session in the context of a running container. This will allow you to browse all directories and use your favorite text editor:
+
+```
+docker exec -it gitlab /bin/bash
+docker restart gitlab
+```
 
 # some may be helpfull links:
 
