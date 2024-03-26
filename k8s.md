@@ -33,6 +33,12 @@ kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 kubectl get pods -A
 ```
 
+restart DNS
+
+```
+kubectl -n kube-system rollout restart deployment coredns
+```
+
 Check k8s:
 
 ```
