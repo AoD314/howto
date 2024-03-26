@@ -188,6 +188,13 @@ docker exec -it gitlab /bin/bash
 docker restart gitlab
 ```
 
+# GitLab-runner
+
+```
+helm install gitlab-runner -f ./values.yaml gitlab/gitlab-runner
+helm delete gitlab-runner
+```
+
 # some may be helpfull links:
 
 * https://github.com/containerd/containerd/blob/main/docs/cri/config.md
