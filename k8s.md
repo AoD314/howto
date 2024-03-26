@@ -2,6 +2,14 @@
 
 ## Commands
 
+Get a shell to the running container:
+
+```
+kubectl get pod shell-demo
+kubectl exec --stdin --tty shell-demo -- /bin/bash
+```
+K8s reset
+
 ```
 echo y | kubeadm reset || true
 rm -rf /etc/cni/net.d || true
