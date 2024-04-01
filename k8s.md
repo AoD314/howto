@@ -163,6 +163,11 @@ tar -zxvf helm-v3.14.3-linux-amd64.tar.gz
 sudo mv linux-amd64/helm /usr/local/bin/helm
 ```
 
+```
+helm install harbor-rnd harbor/
+helm upgrade --reuse-values harbor-rnd harbor/
+```
+
 # Gitlab
 
 https://docs.gitlab.com/ee/install/docker.html
