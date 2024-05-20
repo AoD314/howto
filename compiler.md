@@ -15,7 +15,7 @@ gcc -O3 -fopt-info-vec-optimized -S -c file.c -o file.s
 ```
 clang -O2 -S -fverbose-asm 
 
-clang -O3 -mtune=native -mavx2 -Rpass=loop-vectorize -S -c file.c -o file.s
+clang -O3 -mtune=native -mavx2 -Rpass=loop-vectorize -Rpass-missed-loop-vectorize -Rpass-analysis=loop-vectorize -S -c file.c -o file.s
 ```
 
 ## GCC + llvm-mca 
@@ -26,17 +26,25 @@ gcc -O3 -mtune=native -fvect-cost-model=unlimited -S -c file.c -o - | llvm-mca -
 
 # Perf
 
+USE with: -fno-omit-frame-poinetr
+
 ```
 perf record -e branch-misses -g ./benchmark
 perf report -g fractal
 perf stat -e L1-icache-load-misses ./benchmark
 
+perf record -F 99 -a -g -- ./benchmark
+perf record -F 99 -a -g -p process_PID 
 
 perf record -s -g -F 23999 -- ./benchmark
 perf script | stackcollapse-perf.pl | flamegraph.pl > perf.svg
 perf report --percent-limit 1 -i perf.data 
 
 perf stat -e cycles,instructions,cache-references,cache-misses,bus-cycles ./benchmark --clocksource=cpu --name=test --bs=4k --filename=/dev/nvme0n1p4 --direct=1 --ioengine=pvsync2 --hipri --rw=randread --filesize=4G --loops=10
+```
+
+```
+perf record -F 99 -a -g -p 32238 -g --call-graph=dwarf
 ```
 
 # Flamegraph
